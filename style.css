@@ -1299,36 +1299,30 @@ button:focus-visible,
     font-size: 0.9rem !important;
     line-height: 1.5 !important;
   }
+}
+
+/* Custom rule set for extra-small phone displays */
+@media (max-width: 380px) {
+
+  /* Stack the two stats cards vertically on tiny screens to avoid text crowding */
+  .stats-glass-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.8rem !important;
+  }
+
+  /* Compress padding on the visual card so it never overflows screen edges */
+  .about-visual-wrapper {
+    padding: 1.25rem 1rem !important;
+  }
 
   .about-visual-wrapper h3 {
-    font-size: 1.25rem !important;
-    /* Scales text down so it doesn't overflow container bounds */
+    font-size: 1.15rem !important;
   }
 
-  /* Custom rule set for extra-small phone displays */
-  @media (max-width: 380px) {
-
-    /* Stack the two stats cards vertically on tiny screens to avoid text crowding */
-    .stats-glass-grid {
-      grid-template-columns: 1fr !important;
-      gap: 0.8rem !important;
-    }
-
-    /* Compress padding on the visual card so it never overflows screen edges */
-    .about-visual-wrapper {
-      padding: 1.25rem 1rem !important;
-    }
-
-    .about-visual-wrapper h3 {
-      font-size: 1.15rem !important;
-    }
-
-    .about-visual-wrapper p {
-      font-size: 0.85rem !important;
-      line-height: 1.4 !important;
-    }
+  .about-visual-wrapper p {
+    font-size: 0.85rem !important;
+    line-height: 1.4 !important;
   }
-
 }
 
 /* ==========================================
@@ -1362,6 +1356,7 @@ button:focus-visible,
    ========================================== */
 .service-ad-image {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Subtle, smooth scale effect on hover */
