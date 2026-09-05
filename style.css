@@ -3,8 +3,8 @@
    ========================================== */
 :root {
   /* MEDIA PATHS - Edit easily to configure system assets */
-  --path-logo-image: url("C:/Users/Zawad/Desktop/VilMan/RSA/images/logo.png");
-  --path-logo-with-name: url("C:/Users/Zawad/Desktop/VilMan/RSA/images/rsa-logo.png");
+  --path-logo-image: url("images/logo.png");
+  --path-logo-with-name: url("images/rsa-logo.png");
 
   /* BRAND COLORS (LIGHT / WHITE / BLUE THEME) */
   --color-brand: #42bcf5;
