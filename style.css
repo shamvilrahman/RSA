@@ -1,0 +1,1395 @@
+/* ==========================================
+   1. ISOLATED PATHS & LIGHT BRAND VARIABLES
+   ========================================== */
+:root {
+  /* MEDIA PATHS - Edit easily to configure system assets */
+  --path-logo-image: url("images/logo.png");
+  --path-logo-with-name: url("images/rsa-logo.png");
+
+  /* BRAND COLORS (LIGHT / WHITE / BLUE THEME) */
+  --color-brand: #42bcf5;
+  --color-brand-rgb: 66, 188, 245;
+  --color-light-bg: #f8fafc;
+  --color-light-bg-alt: #ffffff;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-silver: #d6d6d6;
+  --color-slate-dark: #0f172a;
+  /* Custom Phase 2 solid dark header & footer color */
+
+  /* HIGH-END GLASSMORPHISM PRESETS (LIGHT THEME) */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(66, 188, 245, 0.15);
+  --glass-blur: blur(16px) saturate(180%);
+  --glass-glow: 0 10px 32px 0 rgba(66, 188, 245, 0.08);
+
+  /* TRANSITION PRESETS */
+  --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================
+   2. BASE STYLING & HIGH-END BACKGROUND PATTERN
+   ========================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-padding-top: 80px;
+  /* Offset fixed header during section jump scrolling */
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  color: var(--color-text-primary);
+  background-color: var(--color-light-bg);
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
+  background-color: var(--color-light-bg);
+  /* Background grid is turned off globally because it has been migrated into the curtain content underlay */
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Hide Scrollbars */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari, Opera */
+}
+
+html,
+body {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+/* ==========================================
+   2.5 PERFORMANCE OPTIMIZED LOADING OVERLAY
+   ========================================== */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--color-slate-dark);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.body-loading {
+  overflow: hidden !important;
+}
+
+.loader-wrap {
+  width: 100%;
+  max-width: 220px;
+  min-width: 140px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-logo {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.logo-path {
+  fill: none;
+  stroke: var(--color-brand);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: drawOutline 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards, fillColors 1s ease 1s forwards;
+}
+
+@keyframes drawOutline {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fillColors {
+  to {
+    fill: url(#logo-gradient);
+    stroke-width: 0;
+  }
+}
+
+/* ==========================================
+   3. REUSABLE ANIMATIONS & GLASS STYLES
+   ========================================== */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-glow);
+  border-radius: 16px;
+  transition: var(--transition-smooth);
+}
+
+.glass-panel:hover {
+  border-color: rgba(66, 188, 245, 0.35);
+  box-shadow: 0 12px 40px 0 rgba(66, 188, 245, 0.15);
+  background: rgba(255, 255, 255, 0.85);
+}
+
+/* Scroll Fade In & Out Transitions (Hardware Accelerated) */
+.scroll-animate {
+  opacity: 0;
+  transform: translateY(30px);
+  will-change: transform, opacity;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-animate.scrolled-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Ambient Abstract Lighting */
+.parallax-bg-glow {
+  position: absolute;
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  filter: blur(120px);
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.3;
+  transition: transform 0.1s linear;
+}
+
+.glow-1 {
+  background: radial-gradient(circle, rgba(66, 188, 245, 0.3) 0%, transparent 70%);
+  top: 25%;
+  left: -5%;
+}
+
+.glow-2 {
+  background: radial-gradient(circle, rgba(66, 188, 245, 0.25) 0%, transparent 70%);
+  top: 70%;
+  right: -5%;
+}
+
+/* ==========================================
+   4. TRANSPARENT GLASS NAVBAR (NO SOLID COLOR)
+   ========================================== */
+.glass-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  /* Phase 1 Default Smoked Dark Glassmorphism Overlay (Frosted dark refraction with zero white background collision) */
+  background: rgba(15, 23, 42, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  /* Exclude background/backdrop modifications from transitions to guarantee snappy Phase 2 solid snaps */
+  transition: padding 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Instant Snap Phase 2 Solid State (Scrolled past Hero) */
+.glass-navbar.nav-scrolled-state {
+  background: var(--color-slate-dark) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  border-bottom: none !important;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1440px;
+  /* Expanded desktop horizon width for extensive center breathing space */
+  margin: 0 auto;
+  padding: 1rem 4rem;
+  /* Highly padded PC aesthetic */
+  transition: padding 0.4s ease;
+}
+
+.nav-logo-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  width: 58px;
+  /* Enlarged navbar logo icon size for high premium branding */
+  height: 58px;
+  background-image: var(--path-logo-image);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 10px;
+}
+
+.logo-text {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+  color: #ffffff;
+  /* Unified White Logo Typography */
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav-link {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  /* Uniform White Links for Optimal Legibility Over Dark Slate-Grey & Smoked Glass */
+  text-shadow: 0 1px 2px rgba(15, 23, 42, 0.1);
+  /* Micro-Shadow to Edge Define White Text Over Light-Background Scrolls */
+  position: relative;
+  transition: var(--transition-smooth);
+  padding: 5px 0;
+}
+
+.nav-link:hover {
+  color: var(--color-brand);
+  text-shadow: none;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--color-brand);
+  transition: var(--transition-smooth);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Active Scroll Spy Link Highlighting state */
+.nav-link.active {
+  color: var(--color-brand) !important;
+  text-shadow: none !important;
+}
+
+.nav-link.active::after {
+  width: 100% !important;
+}
+
+.nav-cta-btn {
+  background: var(--color-brand);
+  border: 1px solid rgba(66, 188, 245, 0.5);
+  color: #0383bf;
+  padding: 0.6rem 1.3rem;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  transition: var(--transition-smooth);
+}
+
+.nav-cta-btn:hover {
+  background: var(--color-brand);
+  color: #ffffff;
+  border-color: var(--color-brand);
+  box-shadow: 0 4px 15px rgba(66, 188, 245, 0.25);
+  transform: translateY(-2px);
+}
+
+/* Mobile Hamburger Toggle */
+.mobile-menu-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.mobile-menu-toggle .bar {
+  width: 25px;
+  height: 3px;
+  background-color: #ffffff;
+  /* White bars to ensure visual contrast in all viewport scroll positions */
+  border-radius: 2px;
+  transition: var(--transition-smooth);
+}
+
+/* Dedicated mobile menu cross exit icon */
+.nav-menu-close {
+  display: none;
+  /* Only visible inside mobile viewports when the drawer expands */
+}
+
+/* Accessibility Focus Indicator */
+a:focus-visible,
+button:focus-visible,
+.service-card:focus-visible,
+.slide-card:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(66, 188, 245, 0.4) !important;
+  border-color: var(--color-brand) !important;
+}
+
+/* ==========================================
+   5. HERO SECTION (STAGE THEATER FIXED UNDERLAY)
+   ========================================== */
+.hero-section {
+  position: fixed;
+  /* Keeps Hero fixed at back for reveal curtain effect */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 1;
+  /* Underlay layer */
+  background-color: #0a0f1d;
+  /* Solid dark buffer backdrop to prevent bright loading flashes */
+}
+
+.hero-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  z-index: -2;
+}
+
+.video-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+
+  /* Cinematic dark overlay */
+  background:
+    linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.25) 0%,
+      rgba(0, 0, 0, 0.45) 35%,
+      rgba(0, 0, 0, 0.65) 70%,
+      rgba(0, 0, 0, 0.85) 100%);
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 900px;
+  padding: 0 2rem;
+  z-index: 2;
+  will-change: transform, opacity;
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  /* Fluid typographic scale avoids rigid breaks */
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.03em;
+  color: var(--color-light-bg);
+  transition: transform 0.1s ease-out;
+}
+
+.brand-highlight {
+  color: var(--color-brand);
+  text-shadow: 0 0 40px rgba(66, 188, 245, 0.15);
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: var(--color-silver);
+  max-width: 650px;
+  margin: 0 auto 2.5rem auto;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.primary-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--color-brand);
+  color: #ffffff;
+  padding: 1rem 2.2rem;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: 0 10px 30px rgba(66, 188, 245, 0.35);
+  transition: var(--transition-smooth);
+}
+
+.primary-cta-btn:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(66, 188, 245, 0.5);
+}
+
+/* ==========================================
+   6. THEATER CURTAIN WRAPPER (SLIDES OVER HERO)
+   ========================================== */
+.curtain-content-wrapper {
+  position: relative;
+  z-index: 5;
+  /* Places the scrolling body layers in front of Hero */
+  margin-top: 100vh;
+  /* Pushes content completely down to start at fold boundary */
+  background: var(--color-light-bg);
+  box-shadow: 0 -15px 35px rgba(0, 0, 0, 0.05);
+  /* Shadow boundary to mimic page fold */
+
+  /* Highly Noticeable, Non-Chaotic FIXED Halftone Mesh Background Vector Pattern */
+  background-image:
+    radial-gradient(circle, rgba(66, 188, 245, 0.18) 1.5px, transparent 1.5px),
+    radial-gradient(circle, rgba(3, 131, 191, 0.08) 2.5px, transparent 2.5px);
+  background-size: 24px 24px;
+  background-position: 0 0, 12px 12px;
+  background-attachment: fixed;
+  /* STICKY/STATIONARY PATTERN: Content flows gracefully on top while pattern sticks */
+
+  border-top-left-radius: 40px;
+  /* Base curves for GSAP Unfold Trigger */
+  border-top-right-radius: 40px;
+  transform-origin: top center;
+  will-change: transform, border-radius;
+}
+
+/* ==========================================
+   7. ABOUT / INTRO SECTION
+   ========================================== */
+.about-section {
+  padding: 8rem 2rem;
+  position: relative;
+}
+
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.grid-2col {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.section-tagline {
+  color: #0383bf;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  display: block;
+  margin-bottom: 0.8rem;
+}
+
+.section-title {
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+}
+
+.section-desc {
+  color: var(--color-text-secondary);
+  font-size: 0.975rem;
+  font-weight: 400;
+  line-height: 1.65;
+  letter-spacing: -0.005em;
+  margin-bottom: 2.5rem;
+}
+
+.stats-glass-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.stat-card {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.stat-num {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #0383bf;
+  display: block;
+  margin-bottom: 0.4rem;
+  will-change: content;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+/* About Premium Interactive Visual card */
+.about-visual-wrapper {
+  padding: 3rem;
+  position: relative;
+  text-align: center;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.visual-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(66, 188, 245, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.visual-icon {
+  font-size: 3.5rem;
+  color: var(--color-brand);
+  margin-bottom: 1.5rem;
+  display: inline-block;
+  will-change: transform;
+}
+
+.about-visual-wrapper h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 1rem;
+}
+
+.about-visual-wrapper p {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* ==========================================
+   8. AUTOMATIC SERVICES SLIDER (HOVER FREEZE)
+   ========================================== */
+.slider-section {
+  padding: 6rem 0;
+  position: relative;
+  background: transparent;
+  /* Set to transparent to allow continuous halftone background flow without zebra striping */
+  border-top: 1px solid rgba(66, 188, 245, 0.1);
+  border-bottom: 1px solid rgba(66, 188, 245, 0.1);
+}
+
+.section-header-centered {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 3.5rem auto;
+  padding: 0 2rem;
+}
+
+.section-desc-centered {
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  margin-top: -1rem;
+}
+
+.slider-container {
+  width: 100%;
+  overflow: hidden;
+  padding: 1.5rem 0;
+  cursor: grab;
+}
+
+.slider-track {
+  display: flex;
+  gap: 2rem;
+  width: max-content;
+  will-change: transform;
+}
+
+.slide-card {
+  width: 280px;
+  padding: 2rem;
+  flex-shrink: 0;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
+}
+
+.slide-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 12px 40px rgba(66, 188, 245, 0.12);
+}
+
+.slide-icon {
+  font-size: 2rem;
+  color: var(--color-brand);
+  margin-bottom: 1.2rem;
+}
+
+.slide-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.7rem;
+}
+
+.slide-card p {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+/* ==========================================
+   9. SERVICES GRID SECTION (PARALLAX ENABLED)
+   ========================================== */
+.services-grid-section {
+  padding: 8rem 2rem;
+  position: relative;
+}
+
+/* Parallax Typography Background Layer */
+.giant-scrub-text-container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6rem;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: -1;
+  opacity: 0.09;
+  /* Increased to 9% so the stroked letters are visible on light-grey backdrops */
+}
+
+.giant-text-row {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 9.5vw;
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 10px var(--color-brand);
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr));
+  /* Safe fluid layout prevents mobile grid overflows */
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.service-card {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 420px;
+  position: relative;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  will-change: transform, opacity;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
+}
+
+/* Premium Highlight styling for Core focus items (Car Rent / House Rent*) */
+.service-card.premium-focus {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(66, 188, 245, 0.05) 100%);
+  border: 1px solid rgba(66, 188, 245, 0.3);
+  box-shadow: 0 10px 32px 0 rgba(66, 188, 245, 0.08);
+}
+
+.service-card.premium-focus:hover {
+  border-color: var(--color-brand);
+  box-shadow: 0 12px 40px rgba(66, 188, 245, 0.18);
+}
+
+.focus-badge {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(66, 188, 245, 0.12);
+  color: #0383bf;
+  border: 1px solid rgba(66, 188, 245, 0.25);
+  padding: 0.3rem 0.8rem;
+  border-radius: 30px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.card-icon-box {
+  width: 60px;
+  height: 60px;
+  background: rgba(66, 188, 245, 0.12);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  color: #0383bf;
+  margin-bottom: 2rem;
+}
+
+.card-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 1rem;
+}
+
+.card-text {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.card-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+.card-features i {
+  color: #0383bf;
+  /* Adjusted darker shade for better accessibility contrast compliance */
+  margin-right: 6px;
+}
+
+/* Refined Premium Capsule Shape Ghost Button CTA */
+.service-explore-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #0383bf;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border: 1px solid rgba(66, 188, 245, 0.3);
+  background: rgba(66, 188, 245, 0.05);
+  padding: 0.7rem 1.4rem;
+  border-radius: 25px;
+  width: fit-content;
+  margin-top: 1.5rem;
+  transition: var(--transition-smooth);
+}
+
+.service-explore-btn i {
+  transition: transform 0.3s ease;
+}
+
+.service-explore-btn:hover {
+  background-color: var(--color-brand);
+  color: #ffffff;
+  border-color: var(--color-brand);
+  box-shadow: 0 4px 15px rgba(66, 188, 245, 0.2);
+  transform: translateY(-2px);
+}
+
+.service-explore-btn:hover i {
+  transform: translateX(4px);
+}
+
+/* ==========================================
+   10. STATIC FAST BACK-TO-TOP TRIGGER BUTTON
+   ========================================== */
+.back-to-top-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--color-brand);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  display: none;
+  /* Managed dynamically via JavaScript scroll boundary checks */
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 998;
+  /* Sandwiched underneath nav menu (1000) and above general layers (5) */
+}
+
+.back-to-top-btn:hover {
+  background-color: #0383bf;
+}
+
+/* ==========================================
+   11. THEMATIC FOOTER
+   ========================================== */
+.glass-footer {
+  background: var(--color-slate-dark);
+  /* Color synced directly with solid navbar state */
+  border-top: 1px solid rgba(66, 188, 245, 0.15);
+  padding: 5rem 2rem 2rem 2rem;
+  position: relative;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 4rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-logo {
+  display: flex;
+  flex-direction: column;
+  /* Vertical layout stacks the elements gracefully without horizontal wrapping bugs */
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.footer-logo .logo-icon {
+  width: 58px;
+  /* Prominent footer logo icon */
+  height: 58px;
+}
+
+.footer-desc {
+  color: #ffffff;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 320px;
+}
+
+/* Footer Social Icons Layout */
+.footer-socials {
+  display: flex;
+  gap: 15px;
+  margin-top: 1.5rem;
+}
+
+.social-link-img {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.15);
+  /* Light translucent backing ensures excellent contrast for grayscaled icons */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: var(--transition-smooth);
+}
+
+.social-link-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%) opacity(0.5);
+  /* Initially muted grayscale */
+  transition: var(--transition-smooth);
+}
+
+.social-link-img:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-brand);
+  box-shadow: 0 4px 10px rgba(66, 188, 245, 0.2);
+}
+
+.social-link-img:hover img {
+  filter: grayscale(0%) opacity(1);
+  /* Smooth transition to vibrant brand color when hovered */
+}
+
+.footer-links h4,
+.footer-contact h4 {
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.footer-links h4::after,
+.footer-contact h4::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: var(--color-brand);
+}
+
+.footer-links ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.footer-links a {
+  color: #ffffff;
+  font-size: 0.95rem;
+  transition: var(--transition-smooth);
+}
+
+.footer-links a:hover {
+  color: var(--color-brand);
+  padding-left: 5px;
+}
+
+.footer-contact p {
+  color: #ffffff;
+  font-size: 0.95rem;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-contact p i {
+  color: var(--color-brand);
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  /* Clean structured stacking spacing */
+}
+
+.footer-bottom p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+}
+
+.dev-info-link {
+  display: inline-block;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  /* Soft muted base white color */
+  text-transform: lowercase;
+  /* Explicitly lowercase */
+  transition: var(--transition-smooth);
+}
+
+.dev-info-link:hover {
+  color: var(--color-brand);
+  text-decoration: underline;
+}
+
+/* ==========================================
+   12. RESPONSIVE MEDIA QUERIES & MOBILE PRUNING
+   ========================================== */
+@media (min-width: 769px) and (max-width: 1024px) {
+
+  /* Targeted Tablet safety spacing constraints to prevent header wraps and element overlap collisions */
+  .nav-container {
+    padding: 1rem 2.5rem !important;
+  }
+
+  .logo-text {
+    font-size: 1.15rem !important;
+  }
+
+  .nav-menu {
+    gap: 1.2rem !important;
+  }
+
+  .logo-icon {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
+@media (max-width: 768px) {
+
+  /* 1. Relative Flow Override to prevent Dynamic Mobile Address Bar bouncing glitches */
+  .hero-section {
+    position: relative !important;
+    height: 80vh !important;
+  }
+
+  .curtain-content-wrapper {
+    margin-top: 0 !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    box-shadow: none !important;
+    background-attachment: scroll !important;
+    /* Prevents severe scroll rendering lag on mobile WebKit engines */
+    background-size: 20px 20px !important;
+    background-color: var(--color-light-bg) !important;
+    /* Re-inject background color on mobile */
+  }
+
+  /* 2. Force the columns to stack vertically so the visual card drops directly below the text and stats */
+  .grid-2col {
+    display: flex !important;
+    flex-direction: column !important;
+    /* Stacks column 1 (text & stats) and column 2 (visual card) vertically */
+    gap: 2.5rem !important;
+    width: 100% !important;
+  }
+
+  .about-text-wrapper {
+    width: 100% !important;
+  }
+
+  /* 3. Side-by-side stats grid on standard mobile viewports */
+  .stats-glass-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1rem !important;
+    width: 100% !important;
+    margin-bottom: 1.5rem !important;
+    /* Adds clear separation below stats before visual card starts */
+  }
+
+  /* 4. Safety/Quality Card formatting below stats (Disables WebKit 3D clipping) */
+  .about-visual-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 2rem 1.5rem !important;
+
+    transform: none !important;
+    transform-style: flat !important;
+    perspective: none !important;
+    backface-visibility: visible !important;
+    -webkit-backface-visibility: visible !important;
+  }
+
+  .about-visual-wrapper .visual-icon {
+    font-size: 2.8rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .about-visual-wrapper h3 {
+    font-size: 1.25rem !important;
+    margin-bottom: 0.8rem !important;
+  }
+
+  .about-visual-wrapper p {
+    font-size: 0.9rem !important;
+    line-height: 1.5 !important;
+  }
+
+  /* 5. Pruning heavy-scale background layers on mobile viewports */
+  .giant-scrub-text-container {
+    display: none !important;
+  }
+
+  /* Compact Responsive Spacing */
+  .about-section,
+  .services-grid-section,
+  .glass-footer {
+    padding: 4rem 1.2rem !important;
+  }
+
+  /* Mobile elliptical mask adjustments for halftone mesh pattern */
+  .services-grid-section::before {
+    background-size: 24px 24px;
+    -webkit-mask-image: radial-gradient(ellipse 60% 80% at 50% 50%, black 20%, transparent 80%);
+    mask-image: radial-gradient(ellipse 60% 80% at 50% 50%, black 20%, transparent 80%);
+    opacity: 0.4;
+  }
+
+  .hero-title {
+    font-size: 2.6rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.05rem;
+  }
+
+  .mobile-menu-toggle {
+    display: flex;
+  }
+
+  .nav-menu {
+    position: fixed;
+    top: -100vh;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    flex-direction: column;
+    justify-content: center;
+    gap: 2.5rem;
+    transition: var(--transition-smooth);
+    z-index: 999;
+  }
+
+  /* Unique diamond-weave halftone background pattern specifically inside mobile menu drawer overlay */
+  .nav-menu::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      radial-gradient(circle, rgba(66, 188, 245, 0.22) 1.5px, transparent 1.5px),
+      radial-gradient(circle, rgba(3, 131, 191, 0.12) 2px, transparent 2px);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+    -webkit-mask-image: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0) 75%);
+    mask-image: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0) 75%);
+    opacity: 0.9 !important;
+    /* Heightened design contrast */
+    pointer-events: none;
+  }
+
+  .nav-menu-close {
+    display: flex;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: var(--color-text-primary);
+    font-size: 1.8rem;
+    cursor: pointer;
+    z-index: 1001;
+    /* Layered safely above drawer elements */
+  }
+
+  /* Contrast Overrides for Mobile Expandable Drawer Links */
+  .nav-menu.active {
+    top: 0;
+  }
+
+  .nav-menu.active .nav-link {
+    color: var(--color-text-primary) !important;
+    text-shadow: none !important;
+  }
+
+  .mobile-menu-toggle.active .bar {
+    background-color: var(--color-text-primary) !important;
+    pointer-events: none;
+    /* Disable pointer clicks on hamburger while menu is expanded to prevent double toggles */
+  }
+
+  /* Dynamic contrast override: switches white brand text to dark slate-grey when menu overlay is active */
+  .glass-navbar.menu-active-state .logo-text {
+    color: var(--color-text-primary) !important;
+  }
+
+  /* Hamburger transform animation */
+  .mobile-menu-toggle.active .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  .mobile-menu-toggle.active .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .mobile-menu-toggle.active .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .logo-icon {
+    width: 46px !important;
+    /* Comfortably smaller brand scaling on mobile */
+    height: 46px !important;
+  }
+}
+
+@media (max-width: 480px) {
+
+  /* Vertical stack column layout for statistics at narrow limits */
+  .stats-glass-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Safe mobile font scale boundaries for full-length brand name logo inside footer */
+  .footer-logo .logo-text {
+    font-size: 1.15rem !important;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: 0.5px;
+    text-align: left;
+  }
+
+  .about-visual-wrapper {
+    /* 1. Flatten the 3D plane so WebKit doesn't crop the card boundaries */
+    transform: none !important;
+    transform-style: flat !important;
+    perspective: none !important;
+    backface-visibility: visible !important;
+    -webkit-backface-visibility: visible !important;
+
+    /* 2. Fluid box scaling prevents horizontal overflows on narrow screens */
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 2rem 1.5rem !important;
+    /* Compresses padding so text fits mobile layouts */
+  }
+
+  /* 3. Scale down the visual icon so it doesn't push the card out of bounds */
+  .about-visual-wrapper .visual-icon {
+    font-size: 2.8rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  /* 4. Scales text down for perfect vertical alignment on small phones */
+  .about-visual-wrapper h3 {
+    font-size: 1.25rem !important;
+    margin-bottom: 0.8rem !important;
+  }
+
+  .about-visual-wrapper p {
+    font-size: 0.9rem !important;
+    line-height: 1.5 !important;
+  }
+
+  .about-visual-wrapper h3 {
+    font-size: 1.25rem !important;
+    /* Scales text down so it doesn't overflow container bounds */
+  }
+
+  /* Custom rule set for extra-small phone displays */
+  @media (max-width: 380px) {
+
+    /* Stack the two stats cards vertically on tiny screens to avoid text crowding */
+    .stats-glass-grid {
+      grid-template-columns: 1fr !important;
+      gap: 0.8rem !important;
+    }
+
+    /* Compress padding on the visual card so it never overflows screen edges */
+    .about-visual-wrapper {
+      padding: 1.25rem 1rem !important;
+    }
+
+    .about-visual-wrapper h3 {
+      font-size: 1.15rem !important;
+    }
+
+    .about-visual-wrapper p {
+      font-size: 0.85rem !important;
+      line-height: 1.4 !important;
+    }
+  }
+
+}
+
+/* ==========================================
+   13. ACCESSIBILITY RULES (MOTION SENSITIVE SETTINGS)
+   ========================================== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-delay: 0s !important;
+    animation-duration: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0s !important;
+    scroll-behavior: auto !important;
+  }
+
+  .scroll-animate {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+.slide-card,
+.service-card {
+  /* Transition opacity and border colors cleanly, but exclude transform to let GSAP handle tilts and velocity skews */
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s ease;
+}
+
+/* ==========================================
+   14. SERVICES PAGE SPECIFIC IMAGE HOVER EFFECTS
+   ========================================== */
+.service-ad-image {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* Subtle, smooth scale effect on hover */
+.tilt-card:hover .service-ad-image {
+  transform: scale(1.03);
+  box-shadow: 0 15px 35px rgba(66, 188, 245, 0.15);
+}
+
+/* Page title presentation adjustments */
+.services-intro-header .section-title {
+  color: var(--color-text-primary);
+}
+
+/* Responsive adjustment: Ensure images look clean on mobile screens */
+@media (max-width: 768px) {
+  .services-intro-header {
+    padding: 4rem 1.2rem 1rem 1.2rem !important;
+  }
+  
+  .service-ad-image {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Reset layout structure inside service blocks on mobile */
+  .grid-2col {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2rem !important;
+  }
+}
