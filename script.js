@@ -46,19 +46,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const handleScrollState = () => {
     // Sanitized coordinate to ignore negative values caused by iOS elastic scroll bouncing
     const scrollY = Math.max(0, window.pageYOffset || window.scrollY);
-    const threshold = cachedHeroHeight - cachedNavbarHeight;
+    
+    // Set threshold fallback to 300px if hero is absent (e.g. Services subpage) to prevent immediate trigger on load
+    const threshold = heroSection ? (cachedHeroHeight - cachedNavbarHeight) : 300;
     const isPastHero = scrollY >= threshold;
 
     const isMobileMenuOpen = navMenu && navMenu.classList.contains('active');
 
     // Default Phase 1 Glass vs Phase 2 Scrolled Solid State Swapper
     if (isPastHero || isMobileMenuOpen) {
-      if (!isScrolledState) {
+      if (!isScrolledState && navbar) {
         navbar.classList.add('nav-scrolled-state');
         isScrolledState = true;
       }
     } else {
-      if (isScrolledState) {
+      if (isScrolledState && navbar) {
         navbar.classList.remove('nav-scrolled-state');
         isScrolledState = false;
       }
@@ -152,15 +154,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
 
     if (scrollY === 0) {
-      // Force highlight Home at the absolute top
-      navLinks.forEach(link => {
-        if (link.getAttribute('href') === '#hero') link.classList.add('active');
-        else link.classList.remove('active');
-      });
+      // Force highlight Home at the absolute top only if hero section exists
+      if (heroSection) {
+        navLinks.forEach(link => {
+          if (link.getAttribute('href') === '#hero') link.classList.add('active');
+          else link.classList.remove('active');
+        });
+      }
     } else if (scrollY >= maxScroll - 10) {
       // Force highlight Services at the absolute bottom
       navLinks.forEach(link => {
-        if (link.getAttribute('href') === '#services') link.classList.add('active');
+        const href = link.getAttribute('href');
+        if (href === '#services' || href === '#') link.classList.add('active');
         else link.classList.remove('active');
       });
     }
@@ -170,6 +175,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // 3. MOBILE MENU SCROLL LOCK & DRAWER TRIGGER
   // ==========================================
   const toggleMenu = () => {
+    if (!navMenu || !menuToggle || !navbar) return;
+    
     const isActive = navMenu.classList.toggle('active');
     menuToggle.classList.toggle('active');
     navbar.classList.toggle('menu-active-state'); // Add/remove dark-text override class for logo contrast on white drawer background
@@ -194,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   navLinks.forEach(link => {
     link.addEventListener('click', () => {
-      if (navMenu.classList.contains('active')) {
+      if (navMenu && navMenu.classList.contains('active')) {
         toggleMenu();
       }
     });
@@ -202,11 +209,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Reset mobile drawer constraints on large viewport expansion
   window.addEventListener('resize', () => {
-    if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
-      menuToggle.classList.remove('active');
-      menuClose.classList.remove('active');
+    if (navMenu && window.innerWidth > 768 && navMenu.classList.contains('active')) {
+      if (menuToggle) menuToggle.classList.remove('active');
+      if (menuClose) menuClose.classList.remove('active');
       navMenu.classList.remove('active');
-      navbar.classList.remove('menu-active-state');
+      if (navbar) navbar.classList.remove('menu-active-state');
       document.body.classList.remove('body-loading');
       handleScrollState();
     }
@@ -315,70 +322,78 @@ document.addEventListener('DOMContentLoaded', () => {
     // A. Desktop Extra-Ordinary Parallax Sequences
     if (!isMobile) {
       // Camera Defocus & Zoom Parallax
-      gsap.to('.hero-content', {
-        scrollTrigger: {
-          trigger: '#hero',
-          start: 'top top',
-          end: 'bottom top',
-          scrub: true
-        },
-        y: 100,
-        scale: 1.05,
-        opacity: 0,
-        filter: 'blur(12px)',
-        ease: 'none'
-      });
+      if (heroSection) {
+        gsap.to('.hero-content', {
+          scrollTrigger: {
+            trigger: '#hero',
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true
+          },
+          y: 100,
+          scale: 1.05,
+          opacity: 0,
+          filter: 'blur(12px)',
+          ease: 'none'
+        });
 
-      gsap.to('.hero-video', {
-        scrollTrigger: {
-          trigger: '#hero',
-          start: 'top top',
-          end: 'bottom top',
-          scrub: true
-        },
-        scale: 0.95,
-        ease: 'none'
-      });
+        gsap.to('.hero-video', {
+          scrollTrigger: {
+            trigger: '#hero',
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true
+          },
+          scale: 0.95,
+          ease: 'none'
+        });
+      }
 
       // Theater Curtain Unfold Effect
-      gsap.fromTo('#curtain-wrapper', {
-        rotateX: -8,
-        transformPerspective: 1000,
-        borderRadius: '40px 40px 0px 0px'
-      }, {
-        scrollTrigger: {
-          trigger: '#curtain-wrapper',
-          start: 'top bottom',
-          end: 'top top',
-          scrub: true
-        },
-        rotateX: 0,
-        borderRadius: '0px 0px 0px 0px',
-        ease: 'none'
-      });
+      if (document.querySelector('#curtain-wrapper')) {
+        gsap.fromTo('#curtain-wrapper', {
+          rotateX: -8,
+          transformPerspective: 1000,
+          borderRadius: '40px 40px 0px 0px'
+        }, {
+          scrollTrigger: {
+            trigger: '#curtain-wrapper',
+            start: 'top bottom',
+            end: 'top top',
+            scrub: true
+          },
+          rotateX: 0,
+          borderRadius: '0px 0px 0px 0px',
+          ease: 'none'
+        });
+      }
 
       // Opposite Direction Horizontal Scrub Text Parallax
-      gsap.to('#scrub-text-left', {
-        scrollTrigger: {
-          trigger: '.services-grid-section',
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1
-        },
-        xPercent: -30,
-        ease: 'none'
-      });
+      if (document.querySelector('#scrub-text-left')) {
+        gsap.to('#scrub-text-left', {
+          scrollTrigger: {
+            trigger: '.services-grid-section',
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1
+          },
+          xPercent: -30,
+          ease: 'none'
+        });
+      }
 
-      gsap.to('#scrub-text-right', {
-        scrollTrigger: {
-          trigger: '.services-grid-section',
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1
-        },
-        xPercent: 30,
-        ease: 'none'
-      });
+      if (document.querySelector('#scrub-text-right')) {
+        gsap.to('#scrub-text-right', {
+          scrollTrigger: {
+            trigger: '.services-grid-section',
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1
+          },
+          xPercent: 30,
+          ease: 'none'
+        });
+      }
 
       // Scroll Velocity-Based Card Skewing (Optimized to prevent multi-selector rendering collisions)
       let clamp = gsap.utils.clamp(-5, 5); // Max skew of 5 degrees
@@ -397,52 +412,58 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // B. Staggered 3D entrance on services cards
-    gsap.from('.services-grid .service-card', {
-      scrollTrigger: {
-        trigger: '.services-grid',
-        start: 'top 85%',
-        once: true
-      },
-      opacity: 0,
-      y: 50,
-      rotationY: 15,
-      rotationZ: -3,
-      scale: 0.9,
-      stagger: 0.08,
-      duration: 1.2,
-      ease: 'power4.out',
-      clearProps: 'transform,opacity,rotationY,rotationZ,scale'
-    });
+    if (document.querySelector('.services-grid')) {
+      gsap.from('.services-grid .service-card', {
+        scrollTrigger: {
+          trigger: '.services-grid',
+          start: 'top 85%',
+          once: true
+        },
+        opacity: 0,
+        y: 50,
+        rotationY: 15,
+        rotationZ: -3,
+        scale: 0.9,
+        stagger: 0.08,
+        duration: 1.2,
+        ease: 'power4.out',
+        clearProps: 'transform,opacity,rotationY,rotationZ,scale'
+      });
+    }
 
     // C. Rolling Statistics Counters (Safe Virtual Object Tweening - Solves DOM NaN% string error)
-    let percentObj = { val: 0 };
+    if (document.getElementById('stat-card-percent')) {
+      let percentObj = { val: 0 };
 
-    gsap.to(percentObj, {
-      scrollTrigger: {
-        trigger: '#stat-card-percent',
-        start: 'top 90%'
-      },
-      val: 100,
-      duration: 2,
-      ease: 'power2.out',
-      onUpdate: function () {
-        const countPercent = document.getElementById('stat-count-percent');
-        if (countPercent) {
-          countPercent.innerHTML = Math.ceil(percentObj.val) + '%';
+      gsap.to(percentObj, {
+        scrollTrigger: {
+          trigger: '#stat-card-percent',
+          start: 'top 90%'
+        },
+        val: 100,
+        duration: 2,
+        ease: 'power2.out',
+        onUpdate: function () {
+          const countPercent = document.getElementById('stat-count-percent');
+          if (countPercent) {
+            countPercent.innerHTML = Math.ceil(percentObj.val) + '%';
+          }
         }
-      }
-    });
+      });
+    }
 
-    gsap.from('#stat-text-location', {
-      scrollTrigger: {
-        trigger: '#stat-card-location',
-        start: 'top 90%'
-      },
-      opacity: 0,
-      y: 20,
-      duration: 1.2,
-      ease: 'power3.out'
-    });
+    if (document.getElementById('stat-card-location')) {
+      gsap.from('#stat-text-location', {
+        scrollTrigger: {
+          trigger: '#stat-card-location',
+          start: 'top 90%'
+        },
+        opacity: 0,
+        y: 20,
+        duration: 1.2,
+        ease: 'power3.out'
+      });
+    }
 
     // D. Magnetic attractor on Desktop cursor coordinates
     if (!isMobile && !isTouchDevice) {
