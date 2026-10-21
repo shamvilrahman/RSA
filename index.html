@@ -6,11 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reliable Service Assistance (RSA) - Sylhet</title>
   <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.ico">
-  <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+  <!-- Google Fonts: Plus Jakarta Sans, Outfit, Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
     rel="stylesheet">
   <!-- FontAwesome for Premium Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -128,7 +128,7 @@
   <section id="hero" class="hero-section">
     <div class="video-overlay"></div>
     <video class="hero-video" autoplay loop muted playsinline>
-      <source src="videos\bg-video.webm" type="video/webm">
+      <source src="videos/bg-video.webm" type="video/webm">
     </video>
 
     <div class="hero-content">
@@ -262,7 +262,8 @@
               <li><i class="fa-solid fa-circle-check"></i> Flexible booking durations</li>
               <li><i class="fa-solid fa-circle-check"></i> Professional chauffeurs</li>
             </ul>
-            <a href="services.html#car_rental" class="service-explore-btn">Explore Car
+            <a href="services.html#car_rental"
+              class="service-explore-btn">Explore Car
               Rental <i class="fa-solid fa-chevron-right"></i></a>
           </div>
 
@@ -279,7 +280,8 @@
               <li><i class="fa-solid fa-circle-check"></i> High-speed Wi-Fi & Safety</li>
               <li><i class="fa-solid fa-circle-check"></i> Flexible contract options</li>
             </ul>
-            <a href="services.html#house_rental" class="service-explore-btn">Explore
+            <a href="services.html#house_rental"
+              class="service-explore-btn">Explore
               Properties <i class="fa-solid fa-chevron-right"></i></a>
           </div>
 
@@ -295,7 +297,8 @@
               <li><i class="fa-solid fa-circle-check"></i> Spacious utility vans</li>
               <li><i class="fa-solid fa-circle-check"></i> Hassle-free packing support</li>
             </ul>
-            <a href="services.html#van_rental" class="service-explore-btn">Explore Van
+            <a href="services.html#van_rental"
+              class="service-explore-btn">Explore Van
               Rental <i class="fa-solid fa-chevron-right"></i></a>
           </div>
 
@@ -311,7 +314,8 @@
               <li><i class="fa-solid fa-circle-check"></i> Professional content creation</li>
               <li><i class="fa-solid fa-circle-check"></i> Strategic brand campaigns</li>
             </ul>
-            <a href="services.html#marketing" class="service-explore-btn">Explore
+            <a href="services.html#marketing"
+              class="service-explore-btn">Explore
               Marketing <i class="fa-solid fa-chevron-right"></i></a>
           </div>
 
@@ -327,7 +331,8 @@
               <li><i class="fa-solid fa-circle-check"></i> Vetted, trusted cleaning crew</li>
               <li><i class="fa-solid fa-circle-check"></i> Eco-friendly sanitization</li>
             </ul>
-            <a href="services.html#cleaning" class="service-explore-btn">Explore
+            <a href="services.html#cleaning"
+              class="service-explore-btn">Explore
               Cleaning <i class="fa-solid fa-chevron-right"></i></a>
           </div>
 
@@ -343,13 +348,192 @@
               <li><i class="fa-solid fa-circle-check"></i> Dynamic modern layout designs</li>
               <li><i class="fa-solid fa-circle-check"></i> Managed renovations</li>
             </ul>
-            <a href="services.html#interior" class="service-explore-btn">Explore
+            <a href="services.html#interior"
+              class="service-explore-btn">Explore
               Interior <i class="fa-solid fa-chevron-right"></i></a>
+          </div>
+
+        </div>
+
+        <a href="services.html" class="service-explore-btn-last">
+          Full Service Page ⟶ </a>
+      </div>
+    </section>
+
+    <!-- Lewrar Form (Uses Session Storage) -->
+
+    <!-- ===== RSA SERVICE REQUEST — START =====
+     Paste immediately BEFORE:  <footer class="glass-footer">
+     (inside the existing .curtain-content-wrapper, after the #services section).
+     The two popups are moved to <body> by rsa-request.js so they are never
+     clipped by the curtain wrapper's stacking context. -->
+
+    <section id="rsa-request-section" class="rsa-request-section" aria-labelledby="rsa-request-heading">
+      <div class="rsa-request-container">
+        <div class="rsa-request-card">
+
+          <!-- LEFT: liquid-glass panel -->
+          <div class="rsa-request-aside">
+            <div class="rsa-request-glass">
+              <span class="rsa-request-tagline">Service Request</span>
+              <h2 id="rsa-request-heading" class="rsa-request-heading">
+                Tell us what you need, <span class="rsa-request-highlight">we&rsquo;ll take it from there</span>
+              </h2>
+              <p class="rsa-request-lead">
+                Share a few details and pick how you&rsquo;d like to reach us. Your request continues on the
+                platform you choose, so you stay in control of what gets sent.
+              </p>
+              <ul class="rsa-request-points">
+                <li>Choose one or more of our services</li>
+                <li>Continue on WhatsApp or by email</li>
+                <li>You review and send the message yourself</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- RIGHT: solid white form panel -->
+          <div class="rsa-request-panel">
+            <form id="rsa-request-form" class="rsa-request-form" novalidate>
+              <h3 class="rsa-request-form-title">Your details</h3>
+
+              <div class="rsa-request-field">
+                <label class="rsa-request-label" for="rsa-request-name">
+                  Name <span class="rsa-request-req" aria-hidden="true">*</span>
+                </label>
+                <input class="rsa-request-input" type="text" id="rsa-request-name" name="name" maxlength="80"
+                  autocomplete="name" placeholder="Your full name" required aria-required="true"
+                  aria-describedby="rsa-request-name-error">
+                <p class="rsa-request-error" id="rsa-request-name-error" aria-live="polite"></p>
+              </div>
+
+              <div class="rsa-request-field">
+                <label class="rsa-request-label" for="rsa-request-location">
+                  Location <span class="rsa-request-req" aria-hidden="true">*</span>
+                </label>
+                <input class="rsa-request-input" type="text" id="rsa-request-location" name="location" maxlength="100"
+                  autocomplete="address-level2" placeholder="Your area or city" required aria-required="true"
+                  aria-describedby="rsa-request-location-hint rsa-request-location-error">
+                <p class="rsa-request-hint" id="rsa-request-location-hint"></p>
+                <p class="rsa-request-error" id="rsa-request-location-error" aria-live="polite"></p>
+              </div>
+
+              <fieldset class="rsa-request-fieldset" id="rsa-request-services"
+                aria-describedby="rsa-request-services-count rsa-request-services-error">
+                <legend class="rsa-request-label" id="rsa-request-services-legend">
+                  Preferred services <span class="rsa-request-req" aria-hidden="true">*</span>
+                </legend>
+                <ul class="rsa-request-chips" id="rsa-request-services-list"></ul>
+                <p class="rsa-request-count" id="rsa-request-services-count"></p>
+                <p class="rsa-request-error" id="rsa-request-services-error" aria-live="polite"></p>
+              </fieldset>
+
+              <div class="rsa-request-actions">
+                <button type="submit" class="rsa-request-btn rsa-request-btn--primary" id="rsa-request-submit">
+                  Continue
+                </button>
+                <button type="button" class="rsa-request-btn rsa-request-btn--ghost" id="rsa-request-reset">
+                  Clear my details
+                </button>
+              </div>
+
+              <p class="rsa-request-status" id="rsa-request-status" role="status"></p>
+
+              <p class="rsa-request-privacy">
+                Nothing is sent until you choose WhatsApp or email and send the message yourself.
+                Your entries are saved only in this browser tab&rsquo;s session storage, which other
+                scripts on this site can read.
+              </p>
+            </form>
           </div>
 
         </div>
       </div>
     </section>
+
+    <!-- POPUP 1: LOCATION -->
+    <div class="rsa-request-overlay" id="rsa-request-location-popup" data-rsa-request-overlay hidden>
+      <div class="rsa-request-dialog" role="dialog" aria-modal="true" aria-labelledby="rsa-request-location-title"
+        aria-describedby="rsa-request-location-desc rsa-request-location-note" tabindex="-1">
+        <button type="button" class="rsa-request-close" id="rsa-request-location-close"
+          aria-label="Close and decline location sharing">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" focusable="false" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+        <div class="rsa-request-dialog-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8"
+            stroke-linecap="round" stroke-linejoin="round" focusable="false">
+            <path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z" />
+            <circle cx="12" cy="10" r="2.5" />
+          </svg>
+        </div>
+        <h2 class="rsa-request-dialog-title" id="rsa-request-location-title">Where are you from?</h2>
+        <p class="rsa-request-dialog-text" id="rsa-request-location-desc">
+          We use your location only to prefill the service request form. It is kept for the current
+          browsing session in this tab, and you can edit it at any time.
+        </p>
+        <p class="rsa-request-dialog-note" id="rsa-request-location-note">
+          Sharing is optional. If you share, your browser asks for permission first. We then send your
+          approximate position (rounded to about 1&nbsp;km) to BigDataCloud, a third-party lookup service,
+          to find a place name; that service can also see your IP address. Only the place name is saved,
+          never your coordinates.
+        </p>
+        <p class="rsa-request-dialog-status" id="rsa-request-location-popup-status" role="status"></p>
+        <div class="rsa-request-dialog-actions">
+          <button type="button" class="rsa-request-btn rsa-request-btn--primary" id="rsa-request-location-share">
+            <span class="rsa-request-btn-label">Share location</span>
+          </button>
+          <button type="button" class="rsa-request-btn rsa-request-btn--secondary" id="rsa-request-location-decline">
+            Decline
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- POPUP 2: PLATFORM SELECTION -->
+    <div class="rsa-request-overlay" id="rsa-request-platform-popup" data-rsa-request-overlay hidden>
+      <div class="rsa-request-dialog" role="dialog" aria-modal="true" aria-labelledby="rsa-request-platform-title"
+        aria-describedby="rsa-request-platform-desc" tabindex="-1">
+        <button type="button" class="rsa-request-close" id="rsa-request-platform-close"
+          aria-label="Close and return to the form">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" focusable="false" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+        <div class="rsa-request-dialog-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8"
+            stroke-linecap="round" stroke-linejoin="round" focusable="false">
+            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+          </svg>
+        </div>
+        <h2 class="rsa-request-dialog-title" id="rsa-request-platform-title">Where would you like to send your request?
+        </h2>
+        <p class="rsa-request-dialog-text" id="rsa-request-platform-desc">
+          Choose your preferred platform to continue with your service request.
+        </p>
+        <div class="rsa-request-platforms">
+          <!-- Image paths follow the repo's images/ folder. Confirm the exact filenames exist. -->
+          <button type="button" class="rsa-request-platform-btn" id="rsa-request-platform-whatsapp">
+            <img class="rsa-request-platform-img" src="images/whatsapp.png" alt="" width="44" height="44">
+            <span>WhatsApp</span>
+          </button>
+          <button type="button" class="rsa-request-platform-btn" id="rsa-request-platform-email">
+            <img class="rsa-request-platform-img" src="images/gmail.png" alt="" width="44" height="44">
+            <span>Email</span>
+          </button>
+        </div>
+        <p class="rsa-request-dialog-status" id="rsa-request-platform-status" role="status"></p>
+        <div class="rsa-request-dialog-actions">
+          <button type="button" class="rsa-request-btn rsa-request-btn--secondary" id="rsa-request-platform-cancel">
+            Back to form
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="rsa-request.js" defer></script>
 
     <!-- FOOTER (SOLID SLATE THEMATIC FINISH) -->
     <footer class="glass-footer">
@@ -373,8 +557,7 @@
               class="social-link-img">
               <img src="images/instagram.png" alt="Instagram">
             </a>
-            <a href="https://wa.me/8801313295051" target="_blank" rel="noopener noreferrer"
-              class="social-link-img">
+            <a href="https://wa.me/8801313295051" target="_blank" rel="noopener noreferrer" class="social-link-img">
               <img src="images/whatsapp-logo.png" alt="WhatsApp">
             </a>
           </div>
